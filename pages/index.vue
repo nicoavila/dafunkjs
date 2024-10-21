@@ -30,6 +30,7 @@
         { note: 'G6', duration: '16n', time: '0:2:0' },
         { note: 'G6', duration: '16n', time: '0:2:4' },
       ]"
+      :volume="-5"
     />
     <Sampler
       :name="'Kick'"
@@ -41,6 +42,7 @@
         { note: 'G6', duration: '16n', time: '0:3:0' },
         { note: 'G6', duration: '16n', time: '0:4:0' },
       ]"
+      :volume="-10"
     />
   </div>
 </template>

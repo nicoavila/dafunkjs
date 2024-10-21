@@ -34,8 +34,8 @@
       release: 4,
     },
     filter: {
-      frequency: 100,
-      type: "lowpass",
+      frequency: 1000,
+      type: "bandpass",
       Q: 4
     },
     filterEnvelope: {
@@ -43,21 +43,22 @@
       decay: 0,
       sustain: 0.1,
       release: 4,
-      baseFrequency: 800,
+      baseFrequency: 200,
       octaves: 4,
-      exponent : 2
-    }
+      exponent : 1.5
+    },
+    volume: 0
   })
   synth.portamento = 0.1;
 
   onMounted(() => {
 
     // Distortion
-    const dist = new Tone.Distortion(1);
+    const dist = new Tone.Distortion(0.8);
     synth.connect(dist);
-    // Phaser
     
-    synth.toDestination();
+    //synth.toDestination();
+    dist.toDestination();
 
     // Sequence
     const pattern = new Tone.Part((time, event) => {
