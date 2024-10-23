@@ -1,8 +1,12 @@
 <template>
   <ClientOnly>
     <div>
-      <h1 class="text-2xl font-bold">Bassline</h1>
-      <input type="checkbox" :checked="active">
+      <h1 class="text-2xl font-bold">Main Synth</h1>
+      <input type="checkbox" :checked="active" @change="activateInstrument($event)">
+      <div>
+        <span>{{ instrumentVolume }} dB</span>
+        <input type="range" min="-50" max="0" @change="changeVolume($event)">
+      </div>
     </div>
   </ClientOnly>
 </template>
@@ -11,6 +15,7 @@
   import * as Tone from "tone";
 
   const active = ref<boolean>(true);
+  const instrumentVolume = ref<number>(0);
   const props = defineProps({
     sequence: {
       type: Array<{
@@ -23,18 +28,20 @@
   })
 
   // Synth
-  const synth = new Tone.MonoSynth({
+  const synth1 = new Tone.MonoSynth({
+    detune: 20,
     oscillator: {
-      type: "sawtooth",
+      type: "pulse",
+      phase: 145
     },
     envelope: {
       attack: 0.1,
       decay: 0.1,
       sustain: 0.5,
-      release: 4,
+      release: 20,
     },
     filter: {
-      frequency: 1000,
+      frequency: 600,
       type: "bandpass",
       Q: 4
     },
@@ -42,27 +49,56 @@
       attack: 0.15,
       decay: 0,
       sustain: 0.1,
-      release: 4,
-      baseFrequency: 200,
+      release: 6,
+      baseFrequency: 500,
+      octaves: 2,
+      exponent : 4
+    },
+    volume: -15
+  });
+  synth1.portamento = 0.1;
+  const synth2 = new Tone.MonoSynth({
+    oscillator: {
+      type: "sawtooth",
+    },
+    envelope: {
+      attack: 0.1,
+      decay: 0.1,
+      sustain: 0.5,
+      release: 20,
+    },
+    filter: {
+      frequency: 2000,
+      type: "bandpass",
+      Q: 8
+    },
+    filterEnvelope: {
+      attack: 0.10,
+      decay: 0,
+      sustain: 0.20,
+      release: 50,
+      baseFrequency: 400,
       octaves: 4,
-      exponent : 1.5
+      exponent : 4
     },
     volume: 0
-  })
-  synth.portamento = 0.1;
+  });
+  synth2.portamento = 0.1;
+
+  // Distortion
+  const distortion = new Tone.Distortion(0.4);
+  synth1.connect(distortion);
+  synth2.connect(distortion);
+
+  //synth.toDestination();
+  distortion.toDestination();
 
   onMounted(() => {
 
-    // Distortion
-    const dist = new Tone.Distortion(0.8);
-    synth.connect(dist);
-    
-    //synth.toDestination();
-    dist.toDestination();
-
     // Sequence
     const pattern = new Tone.Part((time, event) => {
-      synth.triggerAttackRelease(event.note, event.duration, time)
+      synth1.triggerAttackRelease(Tone.Frequency(event.note).toFrequency() * 0.5, event.duration, time)
+      synth2.triggerAttackRelease(Tone.Frequency(event.note).toFrequency() * 2, event.duration, time);
     }, props.sequence);
     pattern.loop = true;
     pattern.loopStart = 0;
@@ -71,32 +107,22 @@
     pattern.start(0);
   });
 
-  /*onMounted(() => {
-    const notes = [
-      'G3', 
-      "F3",
-      "G3",
-      "A#3",
-      "D3", 
-      "C3", 
-      "D3", 
-      "F3", 
-      "A#2",
-      "A2", 
-      "A#2",
-      "D3", 
-      "G2", 
-      "A2", 
-      "A#2"
-    ];
-    
-    const dist = new Tone.Distortion(0.8).toDestination();
-    synth.connect(dist);
-    const pattern = new Tone.Pattern((time, note) => {
-      synth.triggerAttackRelease(note, "16n", time);
-    }, notes);
-    pattern.start(0);
-  });*/
+  const activateInstrument = (event: Event) => {
+    active.value = !active.value;
+    if (!active.value) {
+      distortion.disconnect();
+      distortion.disconnect();
+    } else {
+      distortion.toDestination();
+      distortion.toDestination();
+    }
+  }
+
+  const changeVolume = (event: Event) => {
+    instrumentVolume.value = parseInt((event.target as HTMLInputElement).value);
+    synth1.set({ volume: instrumentVolume.value });
+    synth2.set({ volume: instrumentVolume.value });
+  }
 </script>
 
 <style>

@@ -30,19 +30,39 @@
         { note: 'G6', duration: '16n', time: '0:2:0' },
         { note: 'G6', duration: '16n', time: '0:2:4' },
       ]"
-      :volume="-5"
+      :volume="-9"
     />
     <Sampler
       :name="'Kick'"
       :sampleName="'audio/zerog-datafile-three-kick3.wav'" 
       :sequence="[
-        { note: 'G6', duration: '16n', time: '0:0:0' },
-        { note: 'G6', duration: '16n', time: '0:1:0' },
-        { note: 'G6', duration: '16n', time: '0:2:0' },
-        { note: 'G6', duration: '16n', time: '0:3:0' },
-        { note: 'G6', duration: '16n', time: '0:4:0' },
+        { note: 'G6', duration: '8n', time: '0:0:0' },
+        { note: 'G6', duration: '8n', time: '0:1:0' },
+        { note: 'G6', duration: '8n', time: '0:2:0' },
+        { note: 'G6', duration: '8n', time: '0:3:0' },
+        { note: 'G6', duration: '8n', time: '0:4:0' },
       ]"
-      :volume="-10"
+      :volume="-20"
+    />
+    <Sampler
+      :name="'Bass'"
+      :sampleName="'audio/bass-sample.wav'" 
+      :sequence="[
+        { note: 'G6', duration: '4n', time: '0:0:0' },
+        { note: 'G6', duration: '4n', time: '0:1:0' },
+        { note: 'G6', duration: '4n', time: '0:2:0' },
+        { note: 'G6', duration: '4n', time: '0:3:0' },
+        { note: 'G6', duration: '4n', time: '0:4:0' },
+      ]"
+      :volume="-5"
+    />
+    <Sampler
+      :name="'Drums'"
+      :sampleName="'audio/drums-sample.wav'" 
+      :sequence="[
+        { note: 'G6', duration: '1n', time: '0:0:0' },
+      ]"
+      :volume="-2"
     />
   </div>
 </template>
