@@ -1,7 +1,11 @@
 <template>
   <ClientOnly>
-    <div>
-      <h1 class="text-2xl font-bold">Sampler ({{ props.name }})</h1>
+    <div class="w-[250px] p-4 rounded-lg bg-white shadow">
+      <div class="mb-2">
+        <span class="px-2 py-1 rounded-lg border-r-2 border-b-2 border-slate-400 bg-slate-100 text-slate-500">{{ props.assignedHotKey }}</span>
+      </div>
+      <h3 class="text-slate-500">Sampler</h3>
+      <h2 class="text-2xl font-bold">{{ props.name }}</h2>
       <input type="checkbox" :checked="active" @change="activateInstrument($event)">
       <div>
         <span>{{ instrumentVolume }} dB</span>
@@ -36,6 +40,10 @@
     volume: {
       type: Number,
       default: 0
+    },
+    assignedHotKey: {
+      type: String,
+      required: true
     }
   })
   
@@ -53,7 +61,7 @@
     instrumentVolume.value = props.volume;
 
     // Sequence
-    const pattern = new Tone.Part((time, event) => {
+    const pattern = new Tone.Part((time, event: { note: string, duration: string}) => {
       sampler.triggerAttackRelease(event.note, event.duration, time)
     }, props.sequence);
     pattern.loop = true;

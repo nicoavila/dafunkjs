@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   ssr: false,
   modules: ['@pinia/nuxt'],
   css: ['~/assets/css/main.css'],
+  alias: {
+    assets: '/<rootDir>/assets'
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
