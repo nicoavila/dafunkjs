@@ -48,7 +48,6 @@
 
   const active = ref<boolean>(true);
   const instrumentVolume = ref<number>(0);
-
   const synth1FilterEnvType = ref<BiquadFilterType>("bandpass");
   const synth1FilterEnvBaseFreq = ref<number>(500);
   const synth2FilterEnvType = ref<BiquadFilterType>("bandpass");
@@ -153,6 +152,10 @@
     pattern.start(0);
   });
 
+  /**
+   * Activate the instrument
+   * @return void
+   */
   const activateInstrument = (event: Event) => {
     active.value = !active.value;
     if (!active.value) {
@@ -164,6 +167,10 @@
     }
   }
 
+  /**
+   * Changes the volume of the instrument
+   * @return void
+   */
   const changeVolume = (event: Event) => {
     instrumentVolume.value = parseInt((event.target as HTMLInputElement).value);
     console.log(`Main Synth volume: ${instrumentVolume.value}`);
@@ -171,31 +178,43 @@
     synth2.set({ volume: instrumentVolume.value });
   }
   
+  /**
+   * Changes filter enveloper type (lowpass, highpass, bandpass) for Synth1
+   * @return void
+   */
   const synth1FilterTypeChange = (event: Event) => {
     synth1FilterEnvType.value = ((event.target as HTMLSelectElement).value as BiquadFilterType);
     console.log(`Synth1 Filter Envelope Type: ${synth1FilterEnvType.value}`);
     synth1.set({ filter: { type: synth1FilterEnvType.value } });
   }
 
+  /**
+   * Changes filter enveloper base frequency for Synth1
+   * @return void
+   */
   const synth1FilterFreqChange = (event: Event) => {
     synth1FilterEnvBaseFreq.value = parseInt((event.target as HTMLInputElement).value);
     console.log(`Synth1 Filter Envelope Base Frequency: ${synth1FilterEnvBaseFreq.value}`);
     synth1.set({ filterEnvelope: { baseFrequency: synth1FilterEnvBaseFreq.value } });
   }
 
+  /**
+   * Changes filter enveloper type (lowpass, highpass, bandpass) for Synth2
+   * @return void
+   */
   const synth2FilterTypeChange = (event: Event) => {
     synth2FilterEnvType.value = ((event.target as HTMLSelectElement).value as BiquadFilterType);
     console.log(`Synth2 Filter Envelope Type: ${synth2FilterEnvType.value}`);
     synth2.set({ filter: { type: synth1FilterEnvType.value } });
   }
 
+  /**
+   * Changes filter enveloper base frequency for Synth2
+   * @return void
+   */
   const synth2FilterFreqChange = (event: Event) => {
     synth2FilterEnvBaseFreq.value = parseInt((event.target as HTMLInputElement).value);
     console.log(`Synth2 Filter Envelope Base Frequency: ${synth2FilterEnvBaseFreq.value}`);
     synth2.set({ filterEnvelope: { baseFrequency: synth2FilterEnvBaseFreq.value } });
   }
 </script>
-
-<style>
-
-</style>

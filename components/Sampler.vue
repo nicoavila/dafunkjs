@@ -68,6 +68,10 @@
     pattern.start(0);
   });
 
+  /**
+   * Activate the instrument
+   * @return void
+   */
   const activateInstrument = (event: Event) => {
     active.value = !active.value;
     if (!active.value) {
@@ -77,12 +81,12 @@
     }
   }
 
+  /**
+   * Changes the volume of the instrument
+   * @return void
+   */
   const changeVolume = (event: Event) => {
     instrumentVolume.value = parseInt((event.target as HTMLInputElement).value);
     sampler.set({ volume: instrumentVolume.value });
   }
 </script>
-
-<style>
-
-</style>
